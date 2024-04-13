@@ -7,20 +7,21 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 import overridetech.jdbc.jpa.model.User;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+
 
 public class Util {
     // реализуйте настройку соеденения с БД
-    private static final String URL = "jdbc:postgresql://localhost:5432/users";
+    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "3772";
     private static Connection connection;
     private static SessionFactory sessionFactory;
 
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER = "org.postgresql.Driver";
 
     public static Connection getConnection() {
         try {
@@ -30,27 +31,34 @@ public class Util {
         }
         return null;
     }
+
     public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+
                 Configuration configuration = new Configuration();
-                configuration.configure();
-                Properties settings = new Properties();
 
-                settings.put(Environment.DRIVER, DRIVER);
-                settings.put(Environment.URL, URL);
-                settings.put(Environment.USER, USERNAME);
-                settings.put(Environment.PASS, PASSWORD);
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");//которое позволяет Hibernate генерировать SQL, оптимизированный для конкретной реляционной базы данных
-                settings.put(Environment.SHOW_SQL, "true");//Пишет все инструкции SQL в консоль
-                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                settings.put(Environment.FORMAT_SQL, "true");
+                configuration.setProperty(Environment.URL, URL);
+                configuration.setProperty(Environment.USER, USERNAME);
+                configuration.setProperty(Environment.PASS, PASSWORD);
+                configuration.setProperty(Environment.DRIVER,DRIVER);
+                configuration.setProperty(Environment.DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
+                configuration.setProperty(Environment.SHOW_SQL, "true");
+                configuration.setProperty(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+                configuration.setProperty(Environment.HBM2DDL_AUTO, "");
 
-                configuration.setProperties(settings);
-                configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(User.class);//в какой класс извлекаем таблицу
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
-
+                System.out.println("Connected!");
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+
+
+            } catch (Exception e) {
+                throw new ExceptionInInitializerError(e);
+            }
+        }
         return sessionFactory;
     }
 }

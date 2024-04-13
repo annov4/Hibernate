@@ -1,6 +1,7 @@
 package overridetech.jdbc.jpa;
 
 import overridetech.jdbc.jpa.model.User;
+import overridetech.jdbc.jpa.service.UserService;
 import overridetech.jdbc.jpa.service.UserServiceImpl;
 
 import java.util.List;
@@ -9,18 +10,18 @@ public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
 
-        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        UserService userService = new UserServiceImpl();
 
-        userServiceImpl.createUsersTable();
-        userServiceImpl.saveUser("Anastasiya", "Novikova", (byte) 34);
-        userServiceImpl.saveUser("Tatiyna", "Prakht", (byte) 36);
-        userServiceImpl.saveUser("Galina", "Vrabie", (byte) 38);
-        userServiceImpl.saveUser("Roman", "Garifullin", (byte) 31);
+        userService.createUsersTable();
+        userService.saveUser("Anastasiya", "Novikova", (byte) 34);
+        userService.saveUser("Tatiyna", "Prakht", (byte) 36);
+        userService.saveUser("Galina", "Vrabie", (byte) 38);
+        userService.saveUser("Roman", "Garifullin", (byte) 31);
 
-        List<User> userList = userServiceImpl.getAllUsers();
+        List<User> userList = userService.getAllUsers();
         System.out.println(userList);
-        userServiceImpl.cleanUsersTable();
-        userServiceImpl.dropUsersTable();
+        userService.cleanUsersTable();
+        userService.dropUsersTable();
 
     }
 }

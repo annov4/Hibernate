@@ -1,22 +1,30 @@
 package overridetech.jdbc.jpa.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Entity;
 
-@Table
+import javax.persistence.*;
+
+@Entity
+//специальный класс, объекты которого нужно хранить в базе данных.
+@Table(name = "users")
+//С ее помощью можно задать имя таблицы в базе, с которой будет связан данный класс
 public class User {
 
     @Id
+    //С ее помощью можно задать первичный ключ для таблицы.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //чтобы Hibernate самостоятельно генерировал ID твоих объектов при добавлении их в базу
+    //IDENTITY при вставке сущности в таблицу - выдается id
+    @Column(name = "id")
     private Long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
+    @Column(name = "lastName")
     private String lastName;
 
-    @Column
+    @Column(name = "age")
     private Byte age;
 
     public User() {
