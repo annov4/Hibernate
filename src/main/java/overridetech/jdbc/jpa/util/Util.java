@@ -14,7 +14,6 @@ import java.sql.SQLException;
 
 
 public class Util {
-    // реализуйте настройку соеденения с БД
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "3772";
@@ -47,7 +46,7 @@ public class Util {
                 configuration.setProperty(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 configuration.setProperty(Environment.HBM2DDL_AUTO, "");
 
-                configuration.addAnnotatedClass(User.class);//в какой класс извлекаем таблицу
+                configuration.addAnnotatedClass(User.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
